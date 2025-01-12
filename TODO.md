@@ -1,3 +1,3 @@
 1. You have now added Chakra UI as a component library
    - https://www.chakra-ui.com/
-    -Let's look at this next to figure out the home page for ppss.
+    -Keep playing with routing and add an FAQ and Policies page along with fix up the home page
