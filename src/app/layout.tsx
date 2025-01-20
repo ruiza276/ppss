@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Provider } from "@/components/ui/provider";
 import { Button } from "@/components/ui/button"
@@ -26,14 +25,14 @@ export default function RootLayout({
     <Provider>{children}
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center">
     <main className="flex flex-col gap-8 row-start-2">
-    <MenuRoot positioning={{ placement: "left-start"}} size={"md"} variant="solid" >
+    <MenuRoot positioning={{ placement: "top-start"}} size={"md"} variant="subtle" >
       <MenuTrigger asChild>
-        <Button size="2xl" variant="outline" colorScheme={"pink"}>
+        <Button size="2xl" variant="outline">
           Menu
         </Button>
       </MenuTrigger>
         <MenuContent>
-          <MenuItem asChild value="naruto">
+          <MenuItem asChild value="policies">
           <a
             href="/Policies"
             target="_blank"
@@ -42,7 +41,7 @@ export default function RootLayout({
             Policies
           </a>
           </MenuItem>
-          <MenuItem asChild value="FAQs">
+          <MenuItem asChild value="faqs">
           <a
             href="/FAQs"
             target="_blank"

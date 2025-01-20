@@ -2,7 +2,7 @@ import { Grid, GridItem } from "@chakra-ui/react"
 import { Image } from "@chakra-ui/react"
 
  
-export default function DashboardLayout({
+export default function FaqsLayout({
     children, // will be a page or nested layout
   }: {
     children: React.ReactNode
