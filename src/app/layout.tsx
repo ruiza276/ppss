@@ -32,6 +32,15 @@ export default function RootLayout({
         </Button>
       </MenuTrigger>
         <MenuContent>
+        <MenuItem asChild value="home">
+          <a
+            href="/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Home
+          </a>
+          </MenuItem>
           <MenuItem asChild value="policies">
           <a
             href="/Policies"
