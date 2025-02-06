@@ -63,6 +63,4 @@ const requestOptions = {
 }
   return data;
 }
-export default function Page(data: any) {
-  return data
-}
+

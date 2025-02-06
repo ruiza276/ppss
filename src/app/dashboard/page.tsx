@@ -2,7 +2,7 @@
 "use client"
 import { useEffect, useState } from 'react';
 import { fetchData } from '../pages/api/index';
-import { Table, Container } from '@chakra-ui/react';
+import { Table, Container, Image, Center } from '@chakra-ui/react';
 
 export default function Page() {
     const [data, setData] = useState<any[]>([]);
@@ -17,6 +17,9 @@ export default function Page() {
 
     return (
         <Container>
+          <Center>
+            <Image src="/surfsUpFinal.png" alt="Waves" /> 
+            </Center>
         <Table.Root size="sm" striped>
         <Table.Header>
           <Table.Row>
