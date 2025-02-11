@@ -16,12 +16,21 @@ const requestOptions = {
   const start = date.toISOString();
   const end = new Date().setDate(date.getDate() + 1);
 
+  const today = new Date()
+  const tomorrow = new Date(today)
+  tomorrow.setDate(today.getDate() + 1)
+
   const lng = '-105.4410';
   const lat = '20.8691';
 
-  //const res = await fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}&start=${start}&end=${end}`, requestOptions);
-  //const data = await res.json();
-  const data = {
+  const res = await fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}&start=${today.toISOString()}&end=${tomorrow.toISOString()}`, requestOptions);
+  const data = await res.json();
+  console.log(start);
+  console.log(end);
+  console.log(today.toISOString());
+  console.log(tomorrow.toISOString());
+  console.log(data);
+ /*  const data = {
     "data": [
         {
             "height": 1.18,
@@ -60,7 +69,7 @@ const requestOptions = {
             "source": "sehavniva.no"
         }
     }
-}
+} */
   return data;
 }
 

@@ -59,6 +59,15 @@ export default function RootLayout({
             FAQs
           </a>
           </MenuItem>
+          <MenuItem asChild value="surfsup">
+          <a
+            href="/SurfsUp"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Surfs Up!
+          </a>
+          </MenuItem>
         </MenuContent>
       </MenuRoot>
       </main>
