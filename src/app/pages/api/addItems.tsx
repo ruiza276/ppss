@@ -13,12 +13,14 @@ const database = client.database("ppss");
 const container = database.container("Items");
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    console.log("ADDitems IF");
     if (req.method === 'POST') {
         try {
             const newItem = req.body;
             const { resource: createdItem } = await container.items.create(newItem);
             res.status(201).json(createdItem);
         } catch (error) {
+            console.error('Failed to create item:', error);
             res.status(500).json({ error: 'Failed to create item' });
         }
     } else {

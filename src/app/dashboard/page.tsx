@@ -1,36 +1,19 @@
 /* "use client"
-
-import { CosmosClient } from "@azure/cosmos";
 import { useEffect, useState } from 'react';
-import Link from "next/link";
-import { revalidatePath } from "next/cache";
 import { Button, Input, Stack, Textarea } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
 
 interface FormValues {
   username: string
   bio: string
 }
-export const dynamic = 'force-dynamic';
 
 export default async function Page() {
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState();
-  const endpoint = process.env["COSMOSDB_ENDPOINT"];
-  const key = process.env["COSMOSDB_KEY"];
 
-  if (!endpoint || !key) {
-      throw new Error("COSMOSDB_ENDPOINT and COSMOSDB_KEY must be defined");
-  }
-
-  const client = new CosmosClient({ endpoint, key });
-  const database = client.database("ppss");
-  const container = database.container("Items");
-
-  const { resources: notes } = await container.items.readAll().fetchAll();
-
-  const onSubmit = async (data) => {
+  const onSubmit = async (data:any) => {
     data.preventDefault();
     try {
         const response = await fetch('/api/addItem', {
@@ -41,11 +24,10 @@ export default async function Page() {
             body: JSON.stringify(newItem),
         });
         if (!response.ok) {
+          console.log(response, "response");
             throw new Error('Network response was not ok');
         }
         const addedItem = await response.json();
-        setItems([...items, addedItem]);
-        setNewItem({ type: '', time: '', height: '' });
     } catch (error) {
         console.error('Failed to add item:', error);
     }
