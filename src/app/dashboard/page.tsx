@@ -1,87 +1,91 @@
-"use client"
+/* "use client"
+
+import { CosmosClient } from "@azure/cosmos";
 import { useEffect, useState } from 'react';
+import Link from "next/link";
+import { revalidatePath } from "next/cache";
+import { Button, Input, Stack, Textarea } from "@chakra-ui/react"
+import { Field } from "@/components/ui/field"
+import { useForm } from "react-hook-form"
 
-export default function Page() {
-    const [items, setItems] = useState([]);
-    const [newItem, setNewItem] = useState({ type: '', time: '', height: '' });
+interface FormValues {
+  username: string
+  bio: string
+}
+export const dynamic = 'force-dynamic';
 
-    useEffect(() => {
-        async function fetchItems() {
-            try {
-                const response = await fetch('/api/getItems');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setItems(data);
-            } catch (error) {
-                console.error('Failed to fetch items:', error);
-            }
+export default async function Page() {
+  const [items, setItems] = useState([]);
+  const [newItem, setNewItem] = useState();
+  const endpoint = process.env["COSMOSDB_ENDPOINT"];
+  const key = process.env["COSMOSDB_KEY"];
+
+  if (!endpoint || !key) {
+      throw new Error("COSMOSDB_ENDPOINT and COSMOSDB_KEY must be defined");
+  }
+
+  const client = new CosmosClient({ endpoint, key });
+  const database = client.database("ppss");
+  const container = database.container("Items");
+
+  const { resources: notes } = await container.items.readAll().fetchAll();
+
+  const onSubmit = async (data) => {
+    data.preventDefault();
+    try {
+        const response = await fetch('/api/addItem', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newItem),
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-        fetchItems();
-    }, []);
+        const addedItem = await response.json();
+        setItems([...items, addedItem]);
+        setNewItem({ type: '', time: '', height: '' });
+    } catch (error) {
+        console.error('Failed to add item:', error);
+    }
+};
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewItem({ ...newItem, [name]: value });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/api/addItem', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newItem),
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const addedItem = await response.json();
-            setItems([...items, addedItem]);
-            setNewItem({ type: '', time: '', height: '' });
-        } catch (error) {
-            console.error('Failed to add item:', error);
-        }
-    };
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm<FormValues>()
 
     return (
-        <div>
-            <h1>Items</h1>
-            <ul>
-                {items.map((item, index) => (
-                    <li key={index}>{JSON.stringify(item)}</li>
-                ))}
-            </ul>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="type"
-                    value={newItem.type}
-                    onChange={handleInputChange}
-                    placeholder="Type"
-                    required
-                />
-                <input
-                    type="text"
-                    name="time"
-                    value={newItem.time}
-                    onChange={handleInputChange}
-                    placeholder="Time"
-                    required
-                />
-                <input
-                    type="text"
-                    name="height"
-                    value={newItem.height}
-                    onChange={handleInputChange}
-                    placeholder="Height"
-                    required
-                />
-                <button type="submit">Add Item</button>
-            </form>
-        </div>
+      console.log(items),
+      <form onSubmit={onSubmit}>
+      <Stack gap="4" align="flex-start" maxW="sm">
+        <Field
+          label="Username"
+          invalid={!!errors.username}
+          errorText={errors.username?.message}
+        >
+          <Input
+            placeholder="@username"
+            {...register("username", { required: "Username is required" })}
+          />
+        </Field>
+        <Field
+          label="Profile bio"
+          invalid={!!errors.bio}
+          helperText="A short description of yourself"
+          errorText={errors.bio?.message}
+        >
+          <Textarea
+            placeholder="I am ..."
+            {...register("bio", { required: "Bio is required" })}
+          />
+        </Field>
+        <Button type="submit">Submit</Button>
+      </Stack>
+    </form>
     );
 }
+
+ */
