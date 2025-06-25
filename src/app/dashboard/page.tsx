@@ -1,73 +1,81 @@
-/* "use client"
+"use client"
 import { useEffect, useState } from 'react';
-import { Button, Input, Stack, Textarea } from "@chakra-ui/react"
-import { Field } from "@/components/ui/field"
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { Button, Input, Stack, Textarea } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
+import { handler } from '../pages/api/addItems';
 
-interface FormValues {
-  username: string
-  bio: string
+interface Message {
+  name: string;
+  location: string;
+  message: string;
 }
 
-export default async function Page() {
-  const [items, setItems] = useState([]);
-  const [newItem, setNewItem] = useState();
+export default function Page() {
+  const [items, setItems] = useState<Message[]>([]);
+  const [newItem, setNewItem] = useState<Message>({ name: '', location: '', message: '' });
+  const req = useForm();
 
-  const onSubmit = async (data:any) => {
-    data.preventDefault();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setNewItem({ ...newItem, [name]: value });
+  };
+
+  const onSubmit = async (e: React.FormEvent) => {
+    console.log("onSubmit", e);
+    console.log("newItem", newItem);
+    const req = 
+    e.preventDefault();
     try {
-        const response = await fetch('/api/addItem', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newItem),
-        });
-        if (!response.ok) {
-          console.log(response, "response");
-            throw new Error('Network response was not ok');
-        }
-        const addedItem = await response.json();
+      handler();
+/*       if (!response.ok) {
+        throw new Error('Network response was not ok');
+      } */
+      //const addedItem: Message = await response.json();
+      //setItems([...items, addedItem]);
+      setNewItem({ name: '', location: '', message: '' });
     } catch (error) {
-        console.error('Failed to add item:', error);
+      console.error('Failed to add item:', error);
     }
-};
+  };
 
-const {
-  register,
-  handleSubmit,
-  formState: { errors },
-} = useForm<FormValues>()
-
-    return (
-      console.log(items),
+  return (
+    <div>
+      <h1>Items</h1>
+      <ul>
+        {items.map((item, index) => (
+          <li key={index}>{JSON.stringify(item)}</li>
+        ))}
+      </ul>
       <form onSubmit={onSubmit}>
-      <Stack gap="4" align="flex-start" maxW="sm">
-        <Field
-          label="Username"
-          invalid={!!errors.username}
-          errorText={errors.username?.message}
-        >
+        <Stack >
           <Input
-            placeholder="@username"
-            {...register("username", { required: "Username is required" })}
+            type="text"
+            name="name"
+            value={newItem.name}
+            onChange={handleInputChange}
+            placeholder="Name"
+            required
           />
-        </Field>
-        <Field
-          label="Profile bio"
-          invalid={!!errors.bio}
-          helperText="A short description of yourself"
-          errorText={errors.bio?.message}
-        >
+          <Input
+            type="text"
+            name="location"
+            value={newItem.location}
+            onChange={handleInputChange}
+            placeholder="Where are you visiting from?"
+            required
+          />
           <Textarea
-            placeholder="I am ..."
-            {...register("bio", { required: "Bio is required" })}
+            name="message"
+            value={newItem.message}
+            onChange={handleInputChange}
+            placeholder="Message"
+            required
           />
-        </Field>
-        <Button type="submit">Submit</Button>
-      </Stack>
-    </form>
-    );
+          <Button type="submit" colorScheme="blue">Add Item</Button>
+        </Stack>
+      </form>
+    </div>
+  );
 }
-
- */
