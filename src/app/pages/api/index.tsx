@@ -29,8 +29,8 @@ const requestOptions = {
   console.log(end);
   console.log(today.toISOString());
   console.log(tomorrow.toISOString());
-  console.log(data);
- /*  const data = {
+  //console.log(data);
+  /* const data = {
     "data": [
         {
             "height": 1.18,
